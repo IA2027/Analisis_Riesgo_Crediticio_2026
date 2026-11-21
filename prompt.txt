@@ -1,0 +1,234 @@
+# PROYECTO: ANÁLISIS DE RIESGO CREDITICIO
+
+Actúa como un equipo experto compuesto por un desarrollador Full Stack Senior, un diseñador UX/UI especializado en FinTech y un analista financiero especializado en gestión de riesgos crediticios, scoring y análisis cuantitativo.
+
+Diseña y desarrolla una landing page extremadamente moderna, original, interactiva y profesional, que funcione como un dashboard financiero avanzado para analizar, visualizar y comprender el riesgo crediticio de una cartera de clientes.
+
+## 1. IDENTIDAD VISUAL Y DISEÑO
+
+Título principal obligatorio:
+
+"ANÁLISIS DE RIESGO CREDITICIO"
+
+- Centrado horizontalmente.
+- Tipografía formal, elegante, moderna y de gran tamaño.
+- Color blanco sólido.
+- Diseño minimalista de nivel corporativo.
+
+Estética general:
+- Fondo principal gris oscuro profundo (#17191D).
+- Paneles y tarjetas en gris grafito (#22262D).
+- Tipografía blanca (#FFFFFF).
+- Bordes y detalles en naranja intenso (#FF7900).
+- Verde brillante para indicadores positivos (#00D68F).
+- Rojo para alertas y riesgos elevados (#FF4545).
+- Azul eléctrico (#3285FF) para información estadística.
+- Amarillo (#FFC247) para advertencias.
+
+Utilizar transparencias sutiles, sombras suaves, bordes luminosos discretos y microanimaciones.
+
+La interfaz debe transmitir tecnología financiera, inteligencia artificial, precisión matemática y profesionalismo.
+
+## 2. MÉTRICAS FINANCIERAS PRINCIPALES
+
+Crear tarjetas interactivas con las siguientes métricas:
+
+1. Total de cartera crediticia.
+2. Cantidad de créditos activos.
+3. Tasa de morosidad (NPL Ratio).
+4. Probabilidad de incumplimiento (PD).
+5. Pérdida dado el incumplimiento (LGD).
+6. Exposición al incumplimiento (EAD).
+7. Pérdida esperada (Expected Credit Loss).
+8. Índice de recuperación de créditos.
+9. Credit Score promedio.
+10. Relación deuda/ingresos (DTI).
+11. Concentración de riesgo por cliente.
+12. Tasa de aprobación crediticia.
+
+Cada tarjeta debe incluir:
+- Valor numérico destacado.
+- Indicador porcentual.
+- Comparación con el período anterior.
+- Iconografía profesional.
+- Indicador visual de tendencia.
+- Animación suave al cargar.
+
+## 3. GRÁFICOS FINANCIEROS INTERACTIVOS
+
+Incorporar gráficos modernos, atractivos y sencillos de interpretar:
+
+A. DISTRIBUCIÓN DEL RIESGO CREDITICIO
+Gráfico circular o tipo donut:
+- Riesgo bajo.
+- Riesgo moderado.
+- Riesgo alto.
+- Riesgo crítico.
+
+B. EVOLUCIÓN DE LA MOROSIDAD
+Gráfico de líneas que muestre la evolución mensual de la tasa de morosidad.
+
+C. DISTRIBUCIÓN DEL CREDIT SCORE
+Histograma con diferentes rangos de puntuación crediticia.
+
+D. CARTERA CREDITICIA
+Gráfico de barras con:
+- Créditos aprobados.
+- Créditos rechazados.
+- Créditos pendientes.
+
+E. PROBABILIDAD DE INCUMPLIMIENTO (PD)
+Gráfico que permita visualizar la probabilidad de default por segmento de clientes.
+
+F. PÉRDIDA ESPERADA
+Visualización comparativa de pérdidas esperadas frente a pérdidas reales.
+
+G. CONCENTRACIÓN DE RIESGO
+Gráfico que identifique los sectores económicos con mayor exposición crediticia.
+
+Todos los gráficos deben tener tooltips, leyendas, animaciones y filtros temporales.
+
+## 4. MÓDULO DE ANÁLISIS DE RIESGO
+
+Crear un panel especializado con los siguientes indicadores:
+
+- PD (Probability of Default).
+- LGD (Loss Given Default).
+- EAD (Exposure at Default).
+- ECL (Expected Credit Loss).
+- Vintage Analysis.
+- Roll Rate.
+- Recovery Rate.
+- Default Rate.
+- Debt-to-Income Ratio.
+- Loan-to-Value Ratio.
+
+Incluir explicaciones breves y profesionales al posicionar el cursor sobre cada indicador.
+
+## 5. SISTEMA DE SEMÁFORO DE RIESGO
+
+Crear un sistema visual de clasificación:
+
+VERDE: Riesgo bajo.
+AMARILLO: Riesgo moderado.
+NARANJA: Riesgo elevado.
+ROJO: Riesgo crítico.
+
+Cada nivel debe mostrar:
+- Porcentaje de exposición.
+- Cantidad de clientes.
+- Probabilidad de incumplimiento.
+- Recomendación de gestión.
+
+## 6. INTELIGENCIA ARTIFICIAL FINANCIERA
+
+Incorporar una sección llamada:
+
+"AI CREDIT RISK ANALYST"
+
+Debe simular un asistente de inteligencia artificial especializado en análisis financiero.
+
+Funciones:
+- Interpretar los indicadores de riesgo.
+- Detectar anomalías en la cartera.
+- Identificar tendencias de morosidad.
+- Detectar concentraciones de riesgo.
+- Generar alertas financieras.
+- Proponer estrategias de mitigación.
+- Elaborar un resumen ejecutivo.
+
+Mostrar los resultados en un panel con recomendaciones y niveles de confianza.
+
+No presentar análisis simulados como predicciones reales. Diferenciar claramente los datos de demostración de los resultados obtenidos mediante modelos entrenados.
+
+## 7. FILTROS INTERACTIVOS
+
+Agregar filtros para:
+- Período de análisis.
+- Tipo de crédito.
+- Segmento de clientes.
+- Nivel de riesgo.
+- Sector económico.
+- Estado del crédito.
+
+Al modificar los filtros, actualizar dinámicamente las tarjetas y gráficos relacionados.
+
+## 8. TABLA DE ANÁLISIS DE CLIENTES
+
+Crear una tabla financiera profesional con datos ficticios:
+
+- ID del cliente.
+- Credit Score.
+- Monto del crédito.
+- Ingresos mensuales.
+- Endeudamiento.
+- PD.
+- Nivel de riesgo.
+- Estado del crédito.
+
+Incorporar:
+- Búsqueda de clientes.
+- Ordenamiento por columnas.
+- Paginación.
+- Filtros.
+- Colores según nivel de riesgo.
+
+## 9. TECNOLOGÍAS DE DESARROLLO
+
+Utilizar tecnologías modernas:
+
+- HTML5.
+- CSS3.
+- JavaScript ES6+.
+- React.
+- Tailwind CSS.
+- Recharts o Apache ECharts para gráficos.
+- Framer Motion para animaciones.
+- Lucide Icons para iconografía.
+- Diseño responsive.
+
+Arquitectura modular, código limpio, componentes reutilizables y buenas prácticas de desarrollo.
+
+## 10. EXPERIENCIA DE USUARIO
+
+La landing page debe incluir:
+
+- Animaciones de entrada.
+- Contadores numéricos animados.
+- Gráficos interactivos.
+- Tooltips informativos.
+- Transiciones suaves.
+- Efectos hover.
+- Navegación fluida.
+- Diseño adaptable a notebooks, monitores, tablets y móviles.
+
+Evitar saturación visual. Priorizar la claridad de la información financiera.
+
+## 11. INFORMACIÓN Y DATOS
+
+Incluir datos financieros ficticios pero coherentes para que el dashboard tenga contenido desde el primer momento.
+
+Mostrar una etiqueta visible:
+
+"ENTORNO DE DEMOSTRACIÓN – DATOS SIMULADOS"
+
+Permitir actualizar los datos mediante una estructura centralizada, preparada para una futura conexión con una API o base de datos.
+
+## 12. RESULTADO FINAL
+
+El resultado debe parecer una plataforma FinTech profesional utilizada por analistas de riesgo, entidades bancarias, fintechs y departamentos financieros.
+
+Quiero una experiencia visual impactante, elegante, interactiva y técnicamente moderna.
+
+El diseño debe combinar:
+- Precisión financiera.
+- Visualización avanzada de datos.
+- Inteligencia artificial.
+- Análisis cuantitativo.
+- Gestión estratégica del riesgo.
+
+No crear una página web genérica. Crear una verdadera experiencia de análisis financiero profesional.
+
+El título principal debe ser exactamente:
+
+"ANÁLISIS DE RIESGO CREDITICIO"

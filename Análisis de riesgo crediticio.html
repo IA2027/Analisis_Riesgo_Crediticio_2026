@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Análisis de riesgo crediticio</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#17191D;--panel:#22262D;--tx:#fff;--mut:#9aa1ad;--or:#FF7900;--gr:#00D68F;--rd:#FF4545;--bl:#3285FF;--yl:#FFC247;--ln:rgba(255,121,0,.28);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(900px 400px at 50% -80px,rgba(255,121,0,.12),transparent),var(--bg);color:var(--tx);font:400 14px/1.5 Sora,system-ui,sans-serif}
+main{max-width:1320px;margin:auto;padding:0 20px 60px}
+header{text-align:center;padding:56px 0 28px}
+.badge{display:inline-block;border:1px solid var(--yl);color:var(--yl);padding:4px 14px;border-radius:99px;font-size:12px;letter-spacing:.06em;background:rgba(255,194,71,.08)}
+h1{font-weight:700;font-size:clamp(28px,5.6vw,68px);letter-spacing:.04em;margin:22px 0 10px;line-height:1.08}
+header p{color:var(--mut);max-width:640px;margin:0 auto}
+.rule{width:96px;height:3px;background:var(--or);margin:20px auto 0;box-shadow:0 0 18px var(--or)}
+.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;gap:10px;padding:12px;margin:18px 0;background:rgba(23,25,29,.9);backdrop-filter:blur(10px);border:1px solid var(--ln);border-radius:12px}
+.filters label{flex:1 1 140px;font-size:11px;color:var(--mut)}
+select,input{width:100%;background:var(--panel);color:#fff;border:1px solid #343944;border-radius:8px;padding:8px;font:inherit;font-size:13px}
+select:focus,input:focus,button:focus-visible{outline:2px solid var(--or)}
+h2{font-size:18px;font-weight:600;margin:38px 0 14px}
+.grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.card{background:var(--panel);border:1px solid var(--ln);border-radius:12px;padding:16px;position:relative;transition:box-shadow .25s,border-color .25s}
+.card:hover{border-color:var(--or);box-shadow:0 0 22px rgba(255,121,0,.18)}
+.kl{display:flex;justify-content:space-between;color:var(--mut);font-size:12px}
+.kl svg{width:18px;height:18px;stroke:var(--or);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.kv{font-size:26px;font-weight:700;margin:8px 0 4px}.kd{font-size:12px;display:flex;align-items:center;gap:6px}
+.up{color:var(--gr)}.dn{color:var(--rd)}
+.spark{height:3px;border-radius:3px;background:#2e333c;margin-top:10px;overflow:hidden}.spark i{display:block;height:100%;background:var(--or);transform-origin:left;animation:sx .9s ease-out}
+.charts{grid-template-columns:repeat(12,1fr)}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}
+.card h3{margin:0 0 2px;font-size:14px;font-weight:600}.card small{color:var(--mut);font-size:11px}
+.plot{height:200px;margin-top:12px;display:flex;align-items:flex-end;gap:6px}
+.col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:4px;font-size:10px;color:var(--mut);min-width:0}
+.col .bars{flex:1;width:100%;display:flex;align-items:flex-end;gap:2px}
+.b{flex:1;border-radius:4px 4px 0 0;transform-origin:bottom;animation:sy .8s ease-out;min-height:2px}
+.hb{margin-top:12px;display:grid;gap:9px}.hb div.r{display:grid;grid-template-columns:96px 1fr 48px;gap:8px;align-items:center;font-size:12px}
+.hb .t{height:10px;background:#2e333c;border-radius:6px;overflow:hidden}.hb .t i{display:block;height:100%;border-radius:6px;transform-origin:left;animation:sx .8s ease-out}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:8px}.legend b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+svg.ch{width:100%;height:200px;margin-top:8px}
+@keyframes sy{from{transform:scaleY(0)}}@keyframes sx{from{transform:scaleX(0)}}
+.rk{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}.rk .card{cursor:help}.rk .kv{font-size:22px}
+[data-t]{cursor:help}
+#tip{position:fixed;z-index:50;pointer-events:none;background:#0f1114;border:1px solid var(--or);border-radius:8px;padding:8px 10px;font-size:12px;max-width:260px;opacity:0;transition:opacity .12s}
+.sem{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.sem .card{border-top:4px solid var(--c)}
+.sem .dot{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);margin-right:8px}
+.sem p{margin:6px 0;color:var(--mut);font-size:13px}.sem p b{color:#fff}
+.ai{border-color:var(--bl)}.aihead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.note{font-size:12px;color:var(--yl);border:1px dashed var(--yl);border-radius:8px;padding:8px 10px;margin:12px 0}
+button{background:var(--or);color:#17191D;border:0;border-radius:8px;padding:8px 14px;font:600 13px Sora,sans-serif;cursor:pointer}
+button.g{background:var(--panel);color:#fff;border:1px solid #343944}button:disabled{opacity:.4;cursor:default}
+.find{display:grid;grid-template-columns:90px 1fr 70px;gap:12px;padding:10px 0;border-top:1px solid #2e333c;align-items:start}
+.tag{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;text-align:center}.conf{text-align:right;color:var(--bl);font-weight:600}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+th{cursor:pointer;text-align:left;color:var(--mut);font-weight:600;padding:10px 8px;border-bottom:1px solid var(--ln);white-space:nowrap}th:hover{color:var(--or)}
+td{padding:9px 8px;border-bottom:1px solid #2e333c}tr:hover td{background:rgba(255,121,0,.05)}
+.pill{padding:2px 9px;border-radius:99px;font-size:12px;border:1px solid}
+.pg{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--mut);font-size:12px;gap:8px;flex-wrap:wrap}
+footer{text-align:center;color:var(--mut);font-size:12px;margin-top:40px}
+@media(max-width:900px){.c4,.c6,.c8{grid-column:span 12}.find{grid-template-columns:1fr}.conf{text-align:left}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<main>
+<header><span class="badge">ENTORNO DE DEMOSTRACIÓN – DATOS SIMULADOS</span>
+<h1>ANÁLISIS DE RIESGO CREDITICIO</h1>
+<p>Monitoreo cuantitativo de cartera: pérdida esperada, morosidad y concentración, con filtros que recalculan todo el tablero.</p><div class="rule"></div></header>
+<section class="filters" id="filters"></section>
+<h2>Indicadores principales</h2><div class="grid kpis" id="kpis"></div>
+<h2>Visualización de la cartera</h2><div class="grid charts" id="charts"></div>
+<h2>Módulo de análisis de riesgo</h2><div class="grid rk" id="rk"></div>
+<h2>Semáforo de riesgo</h2><div class="grid sem" id="sem"></div>
+<h2>AI Credit Risk Analyst</h2><div class="card ai" id="ai"></div>
+<h2>Análisis de clientes</h2><div class="card" id="tbl"></div>
+<footer>Datos ficticios generados localmente. Fuente centralizada en <code>DATA</code> / <code>load()</code>, lista para conectar a una API o base de datos.</footer>
+</main><div id="tip"></div>
+<script>
+const $=s=>document.querySelector(s),sum=(a,f)=>a.reduce((s,x)=>s+f(x),0),cl=(v,a,b)=>Math.min(b,Math.max(a,v));
+let seed=42;const rnd=()=>(seed=seed*16807%2147483647)/2147483647,gauss=()=>Math.sqrt(-2*Math.log(rnd()||.5))*Math.cos(6.283*rnd()),pick=a=>a[Math.floor(rnd()*a.length)];
+const RL=["Bajo","Moderado","Elevado","Crítico"],RC=["#00D68F","#FFC247","#FF7900","#FF4545"];
+const riskOf=p=>p<.03?0:p<.08?1:p<.18?2:3;
+const DATA={types:["Consumo","Hipotecario","Pyme","Tarjeta","Automotor"],lgd:{Consumo:.48,Hipotecario:.25,Pyme:.55,Tarjeta:.65,Automotor:.35},segs:["Retail","Premium","Pyme","Corporativo"],
+sectors:["Comercio","Agro","Industria","Servicios","Construcción","Tecnología","Energía"],statuses:["Activo","Mora","Cancelado","Pendiente","Rechazado"],
+months:["Dic","Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov"],nplBase:[3.9,4,4.2,4.1,4.4,4.6,4.5,4.8,5,4.9,5.2,5.4]};
+DATA.clients=Array.from({length:240},(_,i)=>{const score=cl(Math.round(620+gauss()*95),300,850),pd=cl(.55*Math.exp(-(score-300)/105)*(.8+.4*rnd()),.002,.6),income=Math.round(1200+rnd()*rnd()*9000),r=rnd();
+return{id:"CL-"+(1000+i*7),score,pd,income,amount:Math.round(income*(4+rnd()*30)/100)*100,debt:Math.round(10+rnd()*55),risk:riskOf(pd),type:pick(DATA.types),seg:pick(DATA.segs),sector:pick(DATA.sectors),
+status:r<.07?"Rechazado":r<.15?"Pendiente":r<.2?"Cancelado":rnd()<pd*1.2+.02?"Mora":"Activo"}});
+async function load(){return DATA} /* sustituir por fetch('/api/cartera') */
+const F={period:12,type:"",seg:"",risk:"",sector:"",status:""};
+const fmt={usd:v=>v>=1e6?"$"+(v/1e6).toFixed(1)+" M":"$"+(v/1e3).toFixed(0)+" K",int:v=>Math.round(v).toLocaleString("es-AR"),pct:v=>v.toFixed(1)+"%",num:v=>Math.round(v)+""};
+const IC={wallet:"M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2 M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4",users:"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75",alert:"m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3 M12 9v4 M12 17h.01",act:"M22 12h-4l-3 9L9 3l-3 9H2",shield:"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",down:"M22 17l-8.5-8.5-5 5L2 7 M16 17h6v-6",target:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20 M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12 M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4",star:"m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z",scale:"M12 3v18 M5 21h14 M3 7h18 M6 7l-3 8a3 3 0 0 0 6 0z M18 7l-3 8a3 3 0 0 0 6 0z",pie:"M21 12c.55 0 1.01-.45.94-.99A10 10 0 0 0 12.99 2.06C12.45 1.99 12 2.45 12 3v8a1 1 0 0 0 1 1z M21.21 15.89A10 10 0 1 1 8 2.83",cross:"M22 12h-4 M6 12H2 M12 6V2 M12 22v-4 M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12",ok:"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4 12 14.01l-3-3",layers:"m12 2 10 5-10 5L2 7z M2 12l10 5 10-5 M2 17l10 5 10-5"};
+const ico=n=>`<svg viewBox="0 0 24 24">${IC[n].split(" M").map((d,i)=>`<path d="${i?"M":""}${d}"/>`).join("")}</svg>`;
+const hash=s=>[...s].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7);
+let rows=[],C={};
+function compute(){
+ rows=DATA.clients.filter(c=>["type","seg","risk","sector","status"].every(k=>F[k]===""||String(k=="risk"?c.risk:c[k])===F[k]));
+ const bk=rows.filter(c=>c.status=="Activo"||c.status=="Mora"),mo=rows.filter(c=>c.status=="Mora"),N=Math.max(rows.length,1),T=Math.max(sum(bk,c=>c.amount),1);
+ const pd=sum(bk,c=>c.pd*c.amount)/T*100,lgd=sum(bk,c=>DATA.lgd[c.type]*c.amount)/T*100,ead=T*.92*120,tot=T*120,ecl=ead*pd/100*lgd/100;
+ C={rows,bk,mo,T,tot,ead,ecl,pd,lgd,npl:sum(mo,c=>c.amount)/T*100,n:rows.length,
+ appr:rows.filter(c=>c.status!="Rechazado"&&c.status!="Pendiente").length/N*100,score:sum(rows,c=>c.score)/N,dti:sum(rows,c=>c.debt)/N,
+ conc:Math.max(0,...bk.map(c=>c.amount))/T*100,act:bk.length*12};
+}
+const K=[["Total de cartera","wallet",c=>c.tot,"usd",1,"Saldo vigente (activo y en mora) de la cartera filtrada."],
+["Créditos activos","users",c=>c.act,"int",1,"Créditos vigentes, incluidos los que están en mora."],
+["Morosidad (NPL)","alert",c=>c.npl,"pct",-1,"Porcentaje de cartera en mora sobre cartera total."],
+["Prob. de incumplimiento","act",c=>c.pd,"pct",-1,"PD media ponderada por monto."],
+["Pérdida dado incumplimiento","down",c=>c.lgd,"pct",-1,"LGD: parte de la exposición que no se recupera."],
+["Exposición (EAD)","layers",c=>c.ead,"usd",-1,"Exposición estimada al momento del incumplimiento."],
+["Pérdida esperada (ECL)","shield",c=>c.ecl,"usd",-1,"ECL = PD × LGD × EAD."],
+["Índice de recuperación","target",c=>100-c.lgd,"pct",1,"Porcentaje recuperado de créditos incumplidos."],
+["Credit score promedio","star",c=>c.score,"num",1,"Puntaje crediticio medio (escala 300–850)."],
+["Relación deuda/ingresos","scale",c=>c.dti,"pct",-1,"Endeudamiento sobre ingreso mensual (DTI) promedio."],
+["Concentración por cliente","cross",c=>c.conc,"pct",-1,"Peso del mayor deudor en la cartera vigente."],
+["Tasa de aprobación","ok",c=>c.appr,"pct",1,"Solicitudes aprobadas sobre el total evaluado."]];
+function count(el,to,f){const from=el._v||0;el._v=to;const t0=performance.now();(function s(t){const p=Math.min(1,(t-t0)/800),e=1-Math.pow(1-p,3);el.textContent=f(from+(to-from)*e);if(p<1)requestAnimationFrame(s)})(t0)}
+function kpis(){const el=$("#kpis");if(!el.children.length)el.innerHTML=K.map((k,i)=>`<div class="card" data-t="${k[5]}"><div class="kl"><span>${k[0]}</span>${ico(k[1])}</div><div class="kv" id="kv${i}">0</div><div class="kd" id="kd${i}"></div><div class="spark"><i></i></div></div>`).join("");
+ K.forEach((k,i)=>{const v=k[2](C),d=((hash(k[0]+F.period+C.n)%70)-30)/10,good=d*k[4]>=0;count($("#kv"+i),v,fmt[k[3]]);
+ $("#kd"+i).innerHTML=`<span class="${good?"up":"dn"}">${d>=0?"▲":"▼"} ${Math.abs(d).toFixed(1)}%</span><span style="color:var(--mut)">vs. período anterior</span>`;const s=el.children[i].querySelector(".spark i");s.style.width=cl(55+d*8,15,100)+"%";s.style.background=good?"var(--gr)":"var(--rd)";s.style.animation="none";s.offsetWidth;s.style.animation=""})}
+const bar=(h,c,t)=>`<div class="b" data-t="${t}" style="height:${h}%;background:${c}"></div>`;
+const hb=(items,mx,col)=>`<div class="hb">${items.map(i=>`<div class="r" data-t="${i.t}"><span>${i.l}</span><div class="t"><i style="width:${i.v/mx*100}%;background:${i.c||col}"></i></div><span>${i.s}</span></div>`).join("")}</div>`;
+const card=(cls,t,sub,body)=>`<div class="card ${cls}"><h3>${t}</h3><small>${sub}</small>${body}</div>`;
+function donut(){const ex=[0,1,2,3].map(r=>sum(C.bk.filter(c=>c.risk==r),c=>c.amount)),T=Math.max(sum(ex,x=>x),1),R=62,L=2*Math.PI*R;let o=0;
+ const arcs=ex.map((v,i)=>{const l=v/T*L,s=`<circle cx="100" cy="100" r="${R}" fill="none" stroke="${RC[i]}" stroke-width="26" stroke-dasharray="${l} ${L-l}" stroke-dashoffset="${-o}" transform="rotate(-90 100 100)" data-t="Riesgo ${RL[i].toLowerCase()}: ${(v/T*100).toFixed(1)}% de la exposición"/>`;o+=l;return s}).join("");
+ return card("c4","Distribución del riesgo","Exposición por nivel",`<svg class="ch" viewBox="0 0 200 200">${arcs}<text x="100" y="98" fill="#fff" text-anchor="middle" font-size="20" font-weight="700">${C.bk.length}</text><text x="100" y="116" fill="#9aa1ad" text-anchor="middle" font-size="10">créditos</text></svg><div class="legend">${RL.map((l,i)=>`<span><b style="background:${RC[i]}"></b>${l}</span>`).join("")}</div>`)}
+function line(){const p=F.period,base=DATA.nplBase.slice(-p),m=DATA.months.slice(-p),k=C.npl/(sum(DATA.nplBase,x=>x)/12||1),v=base.map(x=>x*k),mx=Math.max(...v,1)*1.15||1,W=400,H=200,
+ pts=v.map((y,i)=>[20+i*(360/Math.max(p-1,1)),H-24-y/mx*(H-44)]),d=pts.map((q,i)=>(i?"L":"M")+q[0]+" "+q[1]).join(" ");
+ return card("c8","Evolución de la morosidad","NPL mensual (%)",`<svg class="ch" viewBox="0 0 ${W} ${H}"><path d="${d} L${pts.at(-1)[0]} 176 L20 176Z" fill="rgba(255,121,0,.12)"/><path d="${d}" fill="none" stroke="#FF7900" stroke-width="2.5" pathLength="1" stroke-dasharray="1" style="animation:dash 1.2s ease-out"/>${pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="5" fill="#FF7900" data-t="${m[i]}: NPL ${v[i].toFixed(2)}%"/><text x="${q[0]}" y="194" fill="#9aa1ad" font-size="9" text-anchor="middle">${m[i]}</text>`).join("")}</svg><style>@keyframes dash{from{stroke-dashoffset:1}}</style>`)}
+function hist(){const bins=[300,400,500,600,700,800],cnt=bins.map((b,i)=>C.rows.filter(c=>c.score>=b&&c.score<(bins[i+1]||901)).length),mx=Math.max(...cnt,1);
+ return card("c4","Distribución del credit score","Clientes por rango",`<div class="plot">${bins.map((b,i)=>`<div class="col"><div class="bars">${bar(cnt[i]/mx*100,i<2?"#FF4545":i<4?"#3285FF":"#00D68F",`${b}–${b+99}: ${cnt[i]} clientes`)}</div>${b}</div>`).join("")}</div>`)}
+function portf(){const a=C.rows.filter(c=>["Activo","Mora","Cancelado"].includes(c.status)).length,r=C.rows.filter(c=>c.status=="Rechazado").length,p=C.rows.filter(c=>c.status=="Pendiente").length,mx=Math.max(a,r,p,1);
+ return card("c4","Cartera crediticia","Aprobados, rechazados y pendientes",`<div class="plot">${[["Aprobados",a,"#00D68F"],["Rechazados",r,"#FF4545"],["Pendientes",p,"#FFC247"]].map(x=>`<div class="col"><div class="bars">${bar(x[1]/mx*100,x[2],x[0]+": "+x[1])}</div>${x[0]}</div>`).join("")}</div>`)}
+function grp(key,list){return list.map(g=>{const r=C.bk.filter(c=>c[key]==g),t=sum(r,c=>c.amount);return{l:g,pd:r.length?sum(r,c=>c.pd*c.amount)/Math.max(t,1)*100:0,t}})}
+function pdseg(){const g=grp("seg",DATA.segs),mx=Math.max(...g.map(x=>x.pd),1);return card("c4","PD por segmento","Probabilidad de incumplimiento",hb(g.map(x=>({l:x.l,v:x.pd,s:x.pd.toFixed(1)+"%",t:`${x.l}: PD ${x.pd.toFixed(2)}%`})),mx,"#3285FF"))}
+function ecl(){const p=F.period,m=DATA.months.slice(-p),e=m.map((_,i)=>C.ecl/1e6*(.8+DATA.nplBase.slice(-p)[i]/DATA.nplBase[11]*.2)),r=e.map((x,i)=>x*(.85+((hash(m[i]+C.n)%30)/100))),mx=Math.max(...e,...r,.01);
+ return card("c8","Pérdida esperada vs. real","USD millones por mes",`<div class="plot">${m.map((l,i)=>`<div class="col"><div class="bars">${bar(e[i]/mx*100,"#3285FF",`${l}: esperada $${e[i].toFixed(2)} M`)}${bar(r[i]/mx*100,"#FF7900",`${l}: real $${r[i].toFixed(2)} M`)}</div>${l}</div>`).join("")}</div><div class="legend"><span><b style="background:#3285FF"></b>Esperada</span><span><b style="background:#FF7900"></b>Real</span></div>`)}
+function conc(){const g=grp("sector",DATA.sectors).sort((a,b)=>b.t-a.t),T=Math.max(sum(g,x=>x.t),1);return card("c4","Concentración por sector","Exposición crediticia",hb(g.map(x=>({l:x.l,v:x.t,s:(x.t/T*100).toFixed(0)+"%",c:x.t/T>.2?"#FF4545":"#FF7900",t:`${x.l}: ${(x.t/T*100).toFixed(1)}% de la cartera`})),Math.max(g[0].t,1)))}
+const charts=()=>$("#charts").innerHTML=[donut(),line(),hist(),portf(),pdseg(),ecl(),conc()].join("");
+function risk(){const hip=C.bk.filter(c=>c.type=="Hipotecario"),R=[["PD",C.pd.toFixed(2)+"%","Probabilidad de que un deudor incumpla en 12 meses."],["LGD",C.lgd.toFixed(1)+"%","Porcentaje de la exposición que se pierde tras el incumplimiento."],["EAD",fmt.usd(C.ead),"Monto expuesto al momento del incumplimiento."],["ECL",fmt.usd(C.ecl),"Pérdida esperada = PD × LGD × EAD."],
+["Vintage Analysis",(C.npl*1.35).toFixed(1)+"% a 12 m","Mora acumulada de una cohorte de originación a los 12 meses."],["Roll Rate",cl(35+C.npl*4,0,90).toFixed(1)+"%","Proporción de créditos que migran al siguiente tramo de mora."],["Recovery Rate",(100-C.lgd).toFixed(1)+"%","Parte recuperada de lo incumplido."],["Default Rate",(C.bk.length?C.mo.length/C.bk.length*100:0).toFixed(1)+"%","Créditos en incumplimiento sobre créditos vigentes."],["Debt-to-Income",C.dti.toFixed(1)+"%","Cuota de deuda sobre ingreso mensual."],["Loan-to-Value",(hip.length?62+hash("ltv"+hip.length)%12:0)+"%","Monto del préstamo sobre el valor de la garantía (hipotecarios)."]];
+ $("#rk").innerHTML=R.map(r=>`<div class="card" data-t="${r[2]}"><div class="kl"><span>${r[0]}</span></div><div class="kv">${r[1]}</div></div>`).join("")}
+const REC=["Mantener política vigente y ampliar límites con monitoreo estándar.","Reforzar seguimiento y revisar condiciones de renovación.","Reducir exposición, exigir garantías y aplicar cobranza preventiva.","Suspender nuevos desembolsos y activar gestión de recupero."];
+function sem(){const T=Math.max(sum(C.bk,c=>c.amount),1);$("#sem").innerHTML=RL.map((l,i)=>{const r=C.bk.filter(c=>c.risk==i),t=sum(r,c=>c.amount);return`<div class="card" style="--c:${RC[i]}"><h3><span class="dot"></span>${["Verde","Amarillo","Naranja","Rojo"][i]} · ${l}</h3><p>Exposición: <b>${(t/T*100).toFixed(1)}%</b></p><p>Clientes: <b>${r.length}</b></p><p>PD media: <b>${(r.length?sum(r,c=>c.pd)/r.length*100:0).toFixed(1)}%</b></p><p>${REC[i]}</p></div>`}).join("")}
+function findings(){const f=[],T=Math.max(sum(C.bk,c=>c.amount),1),sc=grp("sector",DATA.sectors).sort((a,b)=>b.t-a.t)[0],cf=Math.round(cl(55+C.n/6,0,96)),hi=sum(C.bk.filter(c=>c.risk>=2),c=>c.amount)/T*100,an=C.rows.filter(c=>c.score>700&&c.debt>58);
+ f.push(["Tendencia",C.npl>5?"#FF4545":"#FFC247",`La morosidad se ubica en ${C.npl.toFixed(1)}% y la serie mensual muestra una pendiente ${DATA.nplBase[11]>DATA.nplBase[6]?"creciente":"estable"} en el período.`,cf]);
+ if(sc)f.push(["Concentración",sc.t/T>.2?"#FF4545":"#3285FF",`${sc.l} reúne ${(sc.t/T*100).toFixed(0)}% de la exposición${sc.t/T>.2?", por encima del umbral de 20%":""}.`,cf-4]);
+ f.push(["Alerta",hi>25?"#FF4545":"#FFC247",`${hi.toFixed(1)}% de la cartera vigente está en riesgo elevado o crítico.`,cf]);
+ f.push(["Anomalía","#3285FF",an.length?`${an.length} clientes combinan score superior a 700 con endeudamiento mayor a 58%: revisar capacidad de pago.`:"No se detectan clientes con score alto y sobreendeudamiento en esta selección.",cf-8]);
+ f.push(["Mitigación","#00D68F",hi>25?"Priorizar garantías y límites sectoriales, y reforzar cobranza temprana en el tramo elevado.":"Mantener límites sectoriales y monitorear mensualmente el tramo moderado.",cf-6]);
+ return{f,sum:`Resumen ejecutivo: cartera vigente de ${fmt.usd(C.tot)}, pérdida esperada de ${fmt.usd(C.ecl)} (PD ${C.pd.toFixed(1)}%, LGD ${C.lgd.toFixed(0)}%). Foco recomendado: ${hi>25?"reducir exposición de riesgo elevado":"sostener la calidad actual"}.`}}
+function ai(){const el=$("#ai");el.innerHTML=`<div class="aihead"><small>Asistente demostrativo para interpretar los indicadores filtrados</small><button id="run">Ejecutar análisis</button></div><div class="note">Análisis basado en reglas fijas sobre datos simulados. No proviene de un modelo entrenado ni constituye una predicción real. La confianza indica solo el tamaño de la muestra.</div><div id="out"></div>`;$("#run").onclick=run;run()}
+function run(){const b=$("#run"),o=$("#out");b.disabled=1;o.innerHTML='<p style="color:var(--mut)">Analizando cartera…</p>';setTimeout(()=>{const r=findings();o.innerHTML=r.f.map(x=>`<div class="find"><span class="tag" style="background:${x[1]}22;color:${x[1]}">${x[0]}</span><span>${x[2]}</span><span class="conf" data-t="Confianza heurística según tamaño de muestra">${x[3]}%</span></div>`).join("")+`<div class="find"><span class="tag" style="background:#FF790022;color:#FF7900">Resumen</span><span>${r.sum}</span><span></span></div>`;b.disabled=0},650)}
+const T={q:"",s:"id",d:1,p:0},COLS=[["id","ID"],["score","Credit score"],["amount","Monto"],["income","Ingresos/mes"],["debt","Endeudamiento"],["pd","PD"],["risk","Riesgo"],["status","Estado"]];
+function table(keep){const el=$("#tbl");if(!keep||!$("#q")){el.innerHTML=`<input id="q" placeholder="Buscar por ID, tipo o sector" value="${T.q}" style="max-width:320px;margin-bottom:12px"><div class="tw" id="tb"></div>`;$("#q").oninput=e=>{T.q=e.target.value;T.p=0;tbody()}}tbody()}
+function tbody(){const q=T.q.toLowerCase(),r=C.rows.filter(c=>!q||(c.id+c.type+c.sector+c.seg).toLowerCase().includes(q)).sort((a,b)=>(a[T.s]>b[T.s]?1:-1)*T.d),pgs=Math.max(1,Math.ceil(r.length/10));T.p=Math.min(T.p,pgs-1);
+ $("#tb").innerHTML=`<table><thead><tr>${COLS.map(c=>`<th data-s="${c[0]}">${c[1]}${T.s==c[0]?T.d>0?" ▲":" ▼":""}</th>`).join("")}</tr></thead><tbody>${r.slice(T.p*10,T.p*10+10).map(c=>`<tr><td>${c.id}</td><td>${c.score}</td><td>$${c.amount.toLocaleString("es-AR")}</td><td>$${c.income.toLocaleString("es-AR")}</td><td>${c.debt}%</td><td>${(c.pd*100).toFixed(1)}%</td><td><span class="pill" style="color:${RC[c.risk]};border-color:${RC[c.risk]}">${RL[c.risk]}</span></td><td>${c.status}</td></tr>`).join("")||'<tr><td colspan="8">Sin resultados. Ajustá los filtros o la búsqueda.</td></tr>'}</tbody></table><div class="pg"><span>${r.length} clientes · página ${T.p+1} de ${pgs}</span><span><button class="g" id="pv" ${T.p?"":"disabled"}>Anterior</button> <button class="g" id="nx" ${T.p<pgs-1?"":"disabled"}>Siguiente</button></span></div>`;
+ document.querySelectorAll("th").forEach(h=>h.onclick=()=>{T.d=T.s==h.dataset.s?-T.d:1;T.s=h.dataset.s;tbody()});$("#pv").onclick=()=>{T.p--;tbody()};$("#nx").onclick=()=>{T.p++;tbody()}}
+function filters(){const S=(k,l,o)=>`<label>${l}<select data-k="${k}">${o.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("")}</select></label>`,all=a=>[["","Todos"],...a.map(x=>[x,x])];
+ $("#filters").innerHTML=S("period","Período",[[3,"Últimos 3 meses"],[6,"Últimos 6 meses"],[12,"Últimos 12 meses"]]).replace('value="12"','value="12" selected')+S("type","Tipo de crédito",all(DATA.types))+S("seg","Segmento",all(DATA.segs))+S("risk","Nivel de riesgo",[["","Todos"],...RL.map((l,i)=>[i,l])])+S("sector","Sector",all(DATA.sectors))+S("status","Estado",all(DATA.statuses));
+ document.querySelectorAll("#filters select").forEach(s=>s.onchange=()=>{F[s.dataset.k]=s.dataset.k=="period"?+s.value:s.value;T.p=0;render()})}
+function render(){compute();kpis();charts();risk();sem();table(1);if(!$("#out"))ai()}
+const tip=$("#tip");document.addEventListener("mousemove",e=>{const t=e.target.closest("[data-t]");if(!t){tip.style.opacity=0;return}tip.textContent=t.dataset.t;tip.style.opacity=1;tip.style.left=Math.min(e.clientX+14,innerWidth-280)+"px";tip.style.top=e.clientY+14+"px"});
+load().then(()=>{filters();render()});
+</script></body></html>
